@@ -1,0 +1,49 @@
+.container {
+    padding: 2rem;
+    width: max-content;
+    color: var(--dark-blue);
+    margin:auto;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 600;
+}
+
+h2,
+h3 {
+    font-weight: 500;
+}
+
+.input-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 1rem;
+}
+
+form {
+    background-color: #fff;
+    box-shadow: 0 0 5px 1px #ddd;
+    padding: 1rem 2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1rem;
+}
+
+::ng-deep .mat-form-field-prefix {
+    top: 0 !important;
+}
+
+.error {
+    transform: translateY(4rem);
+    color: #f44336;
+    font-size: 12px;
+    font-weight: 400
+}

@@ -1,0 +1,59 @@
+<div class="container">
+    <h1>Editar Gerente</h1>
+    <form #formGerente="ngForm">
+        <h2>Dados do Gerente</h2>
+        <div class="input-wrapper">
+            <div>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nome:</mat-label>
+                        <input matInput id="nome" name="nome" placeholder="Nome" type="text" required
+                            [(ngModel)]="gerente.nome" #nome="ngModel" minlength="2"/>
+                        <mat-hint>Digite o nome do gerente</mat-hint>
+                        <mat-error *ngIf="nome.errors && (nome.dirty || nome.touched)">
+                            <div [hidden]="!nome.errors?.['required']">
+                                Nome é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!nome.errors?.['minlength']">
+                                Digite um nome <strong>válido</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email:</mat-label>
+                        <input matInput id="email" name="email" placeholder="E-mail" type="text" required
+                            [(ngModel)]="gerente.email" #email="ngModel" minlength="2" [disabled]="true"/>
+                        <mat-hint>O email não pode ser editado</mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>CPF:</mat-label>
+                        <input matInput id="cpf" name="cpf" placeholder="CPF" type="text" required
+                            [(ngModel)]="gerente.cpf" #cpf="ngModel" mask="000.000.000-00" minlength="11"
+                            (keyup)="validarCpf(cpf.value)"    
+                        />
+                        <mat-hint>Digite o CPF do gerente</mat-hint>
+                        <mat-error *ngIf="cpf.errors && (cpf.dirty || cpf.touched)">
+                            <div [hidden]="!cpf.errors?.['required']">
+                                CPF é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!cpf.errors?.['minlength']">
+                                Digite um CPF <strong>válido</strong>
+                            </div>
+                            <div [hidden]="!cpf.errors?.['cpfInvalido']">
+                                Digite um CPF <strong>válido</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+            </div>
+        </div>
+        <div class="button-wrapper">
+            <button mat-raised-button type="button" [routerLink]="['/gerentes/listar']">Voltar</button>
+            <button mat-raised-button color="primary" type="button" (click)="atualizar()">Atualizar</button>
+        </div>
+    </form>
+</div>

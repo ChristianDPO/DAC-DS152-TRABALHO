@@ -1,0 +1,43 @@
+<div class="fundo-login">
+    <div class="container">
+        <form #formUser="ngForm">
+            <div class="input-wrapper-login ">
+                <h1>LOGIN</h1>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email:</mat-label>
+                        <input matInput id="email" name="email" placeholder="email" type="text" required
+                            [(ngModel)]="login.login" #email="ngModel" />
+                        <mat-hint>Digite seu email</mat-hint>
+                        <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+                            <div [hidden]="!email.errors?.['required']">
+                                Email é <strong>obrigatório</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Senha:</mat-label>
+                        <input matInput id="senha" name="senha" placeholder="Senha" type="password" required
+                            [(ngModel)]="login.senha" #senha="ngModel" />
+                        <mat-hint>Digite sua senha</mat-hint>
+                        <mat-error *ngIf="senha.errors && (senha.dirty || senha.touched)">
+                            <div [hidden]="!senha.errors?.['required']">
+                                Senha é <strong>obrigatória</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <div class="button-wrapper">
+                    <button mat-raised-button color="primary" type="submit" (click)="logar()">Entrar</button>
+                </div>
+                <p>
+                    <mat-hint>
+                        Não possui uma conta? <a href="#" [routerLink]="['/new']">Cadastrar</a>
+                    </mat-hint>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

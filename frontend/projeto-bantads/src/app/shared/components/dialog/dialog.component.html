@@ -1,0 +1,78 @@
+<div class="dialog">
+    <mat-dialog-content class="">
+        <h2>{{data.op}}</h2>
+        <hr class="blueHr">
+        <div class="saldo" *ngIf="data.op=='Saldo'">
+            <table mat-table [dataSource]="elementosTabelaSaldo" class="saldoTable">
+                <ng-container matColumnDef="saldo">
+                    <th mat-header-cell *matHeaderCellDef>Saldo</th>
+                    <td mat-cell *matCellDef="let element"> {{element.saldo! | currency}} </td>
+                </ng-container>
+                <ng-container matColumnDef="limite">
+                    <th mat-header-cell *matHeaderCellDef>Limite</th>
+                    <td mat-cell *matCellDef="let element"> {{element.limite! | currency}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsSaldo"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsSaldo;"></tr>
+            </table>
+        </div>
+        <div *ngIf="data.op=='Extrato'">
+            <form ngForm="datafiltro">
+                <mat-form-field appearance="outline">
+                    <mat-label>Indique o período para consulta</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate #dataInicio id="dataInicio" name="dataInicio" placeholder="Data de início">
+                        <input matEndDate #dataFim id="dataFim" name="dataFim" placeholder="Data de fim">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="button"
+                    (click)="filtrar(dataInicio.value,dataFim.value)">Filtrar</button>
+            </form>
+
+            <div *ngIf="result">
+                <table mat-table [dataSource]="datass" class="extratoTable">
+                    <ng-container matColumnDef="Data">
+                        <th mat-header-cell *matHeaderCellDef> Data</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.data}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Movimentacoes">
+                        <th mat-header-cell *matHeaderCellDef>Movimentações</th>
+                        <td mat-cell *matCellDef="let element">
+                            <ng-container *ngFor="let movi of element.movimentacoes">
+                                <div
+                                    [ngClass]="movi.tipo == 'saq' ||  ( movi.tipo == 'tra' && movi.idContaDestino != contaCliente.id)? 'vermelho' : 'azul' ">
+                                    <p class="vl data">Data e hora: {{movi.dataHora | date:'dd/MM/yyyy  HH:mm':'America/SaoPaulo'}}</p>
+                                    <p class="vl">Tipo:
+                                        <span *ngIf="movi.tipo=='saq'"> Saque</span>
+                                        <span *ngIf="movi.tipo=='dep'"> Depósito</span>
+                                        <span *ngIf="movi.tipo=='tra'"> Transferência</span>
+                                    </p>
+                                    <p class="vl">Conta Origem: {{movi.idContaOrigem}}</p>
+                                    <p class="vl">Conta Destino: {{movi.idContaDestino}}</p>
+                                    <p class="vl">Valor: {{movi.valor | currency}}</p>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Saldo">
+                        <th mat-header-cell *matHeaderCellDef>Saldo do dia</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.saldo | currency}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsData"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsData">
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="start">
+        <button mat-stroked-button mat-dialog-close>Voltar</button>
+    </mat-dialog-actions>
+</div>

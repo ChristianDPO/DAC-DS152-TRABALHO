@@ -1,0 +1,52 @@
+.divTabela, table {
+    width: 100%;
+}
+
+.mat-header-cell {
+    font-size: 15px;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    margin: .5rem;
+}
+
+.button-aprovar {
+    background-color: var(--green);
+    color: white;
+}
+
+.button-recusar {
+    background-color: var(--red);
+    color: white;
+}
+
+.mat-column-cpf {
+    width: 20%;
+}
+
+.mat-column-salario {
+    width: 20%;
+}
+
+.mat-column-actions {
+    width: 20%;
+    text-align: center;
+}
+
+/* Botão Logout */
+.button-wrapper-logout{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.2rem;
+    justify-content: left; 
+}
+
+.button-remove {
+    background-color: rgb(221, 17, 17);
+    color: white;
+    cursor:pointer;
+}

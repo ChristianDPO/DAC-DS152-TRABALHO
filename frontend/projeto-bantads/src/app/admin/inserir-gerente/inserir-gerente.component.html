@@ -1,0 +1,101 @@
+<div class="container">
+    <h1>Cadastrar novo Gerente</h1>
+    <form #formGerente="ngForm">
+        <h2>Dados do Gerente</h2>
+        <div class="input-wrapper">
+            <div>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nome:</mat-label>
+                        <input matInput id="nome" name="nome" placeholder="Nome" type="text" required
+                            [(ngModel)]="gerente.nome" #nome="ngModel" minlength="2"/>
+                        <mat-hint>Digite o nome do gerente</mat-hint>
+                        <mat-error *ngIf="nome.errors && (nome.dirty || nome.touched)">
+                            <div [hidden]="!nome.errors?.['required']">
+                                Nome é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!nome.errors?.['minlength']">
+                                Digite um nome <strong>válido</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email:</mat-label>
+                        <input matInput id="email" name="email" placeholder="E-mail" type="text" required
+                            [(ngModel)]="gerente.email" #email="ngModel" minlength="2"/>
+                        <mat-hint>Digite o email do gerente</mat-hint>
+                        <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+                            <div [hidden]="!email.errors?.['required']">
+                                Email é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!email.errors?.['minlength']">
+                                Digite um email <strong>válido</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>CPF:</mat-label>
+                        <input matInput id="cpf" name="cpf" placeholder="CPF" type="text" required
+                            [(ngModel)]="gerente.cpf" #cpf="ngModel" mask="000.000.000-00" minlength="11"
+                            (keyup)="validarCpf(cpf.value)"
+                            />
+                        <mat-hint>Digite o CPF do gerente</mat-hint>
+                        <mat-error *ngIf="cpf.errors && (cpf.dirty || cpf.touched)">
+                            <div [hidden]="!cpf.errors?.['required']">
+                                CPF é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!cpf.errors?.['minlength']">
+                                Digite um CPF <strong>válido</strong>
+                            </div>
+                            <div [hidden]="!cpf.errors?.['cpfInvalido']">
+                                Digite um CPF <strong>válido</strong>
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+            </div>
+            <div>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Senha:</mat-label>
+                        <input matInput id="senha" name="senha" placeholder="Senha" type="password" required
+                            [(ngModel)]="gerente.senha" #senha="ngModel" minlength="8"/>
+                        <mat-hint>Digite a senha</mat-hint>
+                        <mat-error *ngIf="senha.errors && (senha.dirty || senha.touched)">
+                            <div [hidden]="!senha.errors?.['required']">
+                                Senha é <strong>obrigatória</strong>
+                            </div>
+                            <div [hidden]="!senha.errors?.['minlength']">
+                               A senha deve conter ao menos 8 caracteres
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Confirmar senha:</mat-label>
+                        <input matInput id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar Senha" type="password" required 
+                            [(ngModel)]="confirmPassword" #confirmarSenha="ngModel"/>
+                        <mat-hint>Digite seu senha novamente</mat-hint>
+                        <mat-error *ngIf="confirmarSenha.errors && (confirmarSenha.dirty || confirmarSenha.touched)">
+                            <div [hidden]="!confirmarSenha.errors?.['required']">
+                                A confirmação de senha é <strong>obrigatória</strong>
+                            </div>
+                        </mat-error>
+                        <div class="error" [hidden]="confirmarSenha.value === senha.value  || !confirmarSenha.touched">
+                            A Senha e a confirmação diferem
+                        </div>
+                    </mat-form-field>
+                </p>
+            </div>
+        </div>
+        <div class="button-wrapper">
+            <button mat-raised-button type="button" [routerLink]="['/gerentes/listar']">Voltar</button>
+            <button mat-raised-button color="primary" type="button" (click)="cadastrar()" [disabled]="!formGerente.valid || confirmarSenha.errors?.['required'] || confirmarSenha.value !== senha.value">Cadastrar</button>
+        </div>
+    </form>
+</div>

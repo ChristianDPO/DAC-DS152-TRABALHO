@@ -1,0 +1,109 @@
+<div class="engloba">
+
+    <div class="menu-lateral">
+
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>{{gerenteLogado.nome! }}</b></h1>
+            <p>{{gerenteLogado.email! }}</p>
+            <p>{{gerenteLogado.cpf! | mask: "000.000.000-00"}}</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente']">
+            <p>• Pedidos de Autocadastro</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/listar-clientes']">
+            <p>• Clientes</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/listar-melhores-clientes']">
+            <p>• Melhores Clientes</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/consultar-cliente']">
+            <p>• Consultar Cliente</p>
+        </div>
+
+        <div class="button-wrapper-logout">
+            <button mat-raised-button
+                    class="button-remove"
+                    matTooltip="Realizar Logout"
+                    matTooltipPosition="right"
+                    (click)="logout()">
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+
+    </div>
+
+    <div class="info-wrapper">
+        <h1>Seus Clientes</h1>
+
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Pesquisar</mat-label>
+            <input matInput placeholder="Pesquise clientes por nome ou CPF..." (keyup)="filtrarClientes($event)">
+        </mat-form-field>
+
+        <div class="divTabela">
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc">
+
+                <!-- CPF Column -->
+                <ng-container matColumnDef="cpf">
+                    <th mat-header-cell *matHeaderCellDef> CPF </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente.cpf | mask: '000.000.000-00'}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Completo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente.nome}} </td>
+                </ng-container>
+
+                <!-- Cidade Column -->
+                <ng-container matColumnDef="cidade">
+                    <th mat-header-cell *matHeaderCellDef> Cidade </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente.endereco.cidade}} </td>
+                </ng-container>
+
+                <!-- Estado Column -->
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente.endereco.estado}} </td>
+                </ng-container>
+
+                <!-- Saldo Column -->
+                <ng-container matColumnDef="saldo">
+                    <th mat-header-cell *matHeaderCellDef> Saldo em Conta </th>
+                    <td mat-cell *matCellDef="let element"> {{element.conta.saldo | currency}} </td>
+                </ng-container>
+
+                <!-- Detalhes Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Detalhes </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button
+                                matTooltip="Visualizar"
+                                matTooltipPosition="left"
+                                class="button-detalhes"
+                                (click)="exibirDetalhesCliente(element.cliente, element.conta)"
+                        >
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons
+                aria-label="Selecione a página de pedidos de autocadastro">
+            </mat-paginator>
+        </div>
+
+
+        
+
+    </div>
+
+</div>

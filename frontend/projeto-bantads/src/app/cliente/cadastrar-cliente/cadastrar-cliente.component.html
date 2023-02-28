@@ -1,0 +1,212 @@
+<div class="container">
+    <h1>Autocadastro</h1>
+    <form #formCliente="ngForm">
+        <h2>Dados Pessoais</h2>
+        <div class="input-wrapper">
+            <div class="client-input">
+                <table cellspacing="0" class="table">
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nome:</mat-label>
+                                <input matInput id="nome" name="nome" placeholder="Nome" type="text" required
+                                    [(ngModel)]="cliente.nome" #nome="ngModel" minlength="2"  />
+                                <mat-hint>Digite seu nome completo</mat-hint>
+                                <mat-error *ngIf="nome.errors && (nome.dirty || nome.touched)">
+                                    <div [hidden]="!nome.errors?.['required']">
+                                        Nome é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!nome.errors?.['minlength']">
+                                        Digite um nome <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field appearance="outline">
+                                <mat-label>E-mail:</mat-label>
+                                <input matInput id="email" name="email" placeholder="E-mail" type="text" required
+                                    [(ngModel)]="cliente.email" #email="ngModel" minlength="2" />
+                                <mat-hint>Digite seu e-mail</mat-hint>
+                                <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+                                    <div [hidden]="!email.errors?.['required']">
+                                        E-mail é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!email.errors?.['minlength']">
+                                        Digite um e-mail <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>CPF:</mat-label>
+                                <input matInput id="cpf" name="cpf" placeholder="CPF" type="text" required
+                                    [(ngModel)]="cliente.cpf" #cpf="ngModel" mask="000.000.000-00" minlength="11"
+                                    (keyup)="validarCpf(cpf.value)" />
+                                <mat-hint>Digite seu CPF</mat-hint>
+                                <mat-error *ngIf="cpf.errors && (cpf.dirty || cpf.touched)">
+                                    <div [hidden]="!cpf.errors?.['required']">
+                                        CPF é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!cpf.errors?.['cpfInvalido']">
+                                        Digite um CPF <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Salário:</mat-label>
+                                <input matInput id="salario" name="salario" placeholder="Salário" type="text" required
+                                    [(ngModel)]="cliente.salario" #salario="ngModel" mask="separator.2" [thousandSeparator]="'.'"
+                                    [decimalMarker]="','" prefix="R$ " [dropSpecialCharacters]="true"/>
+                                <span matPrefix>&nbsp;</span>
+                                <mat-hint>Digite seu salário</mat-hint>
+                                <mat-error *ngIf="salario.errors && (salario.dirty || salario.touched)">
+                                    <div [hidden]="!salario.errors?.['required']">
+                                        Salário é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!salario.errors?.['minlength']">
+                                        Digite um salário <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div *ngIf="cliente.endereco != undefined" class="endereco-input">
+
+                <h3>Endereço</h3>
+                <table cellspacing="0" class="table">
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Tipo:</mat-label>
+                                <input matInput id="tipo" name="tipo" placeholder="Tipo" type="text" required
+                                    [(ngModel)]="cliente.endereco.tipo" #tipo="ngModel" minlength="2" />
+                                <mat-hint>Digite o tipo do endereço</mat-hint>
+                                <mat-error *ngIf="tipo.errors && (tipo.dirty || tipo.touched)">
+                                    <div [hidden]="!tipo.errors?.['required']">
+                                        Tipo é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!tipo.errors?.['minlength']">
+                                        Digite um tipo <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Logradouro:</mat-label>
+                                <input matInput id="logradouro" name="logradouro" placeholder="Logradouro" type="text"
+                                    required [(ngModel)]="cliente.endereco.logradouro" #logradouro="ngModel"
+                                    minlength="2" />
+                                <mat-hint>Digite o logradouro</mat-hint>
+                                <mat-error *ngIf="logradouro.errors && (logradouro.dirty || logradouro.touched)">
+                                    <div [hidden]="!logradouro.errors?.['required']">
+                                        Lougradouro é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!logradouro.errors?.['minlength']">
+                                        Digite um logradouro <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Número:</mat-label>
+                                <input matInput id="numero" name="numero" placeholder="Número" type="text" required
+                                    [(ngModel)]="cliente.endereco.numero" #numero="ngModel"
+                                    [pattern]="numericoPattern" />
+                                <mat-hint>Digite o número</mat-hint>
+                                <mat-error *ngIf="numero.errors && (numero.dirty || numero.touched)">
+                                    <div [hidden]="!numero.errors?.['required']">
+                                        Número é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!numero.errors?.['pattern']">
+                                        Digite um valor <strong>numérico</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Complemento:</mat-label>
+                                <input matInput id="complemento" name="complemento" placeholder="Complemento"
+                                    type="text" [(ngModel)]="cliente.endereco.complemento" #complemento="ngModel" />
+                                <mat-hint>Digite o complemento</mat-hint>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field appearance="outline">
+                                <mat-label>CEP:</mat-label>
+                                <input matInput id="cep" name="cep" placeholder="CEP" type="text" required
+                                    [(ngModel)]="cliente.endereco.cep" #cep="ngModel" mask="00000-000" minlength="8" />
+                                <mat-hint>Digite o CEP</mat-hint>
+                                <mat-error *ngIf="cep.errors && (cep.dirty || cep.touched)">
+                                    <div [hidden]="!cep.errors?.['required']">
+                                        CEP é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!cep.errors?.['minlength']">
+                                        Digite um CEP <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Cidade:</mat-label>
+                                <input matInput id="cidade" name="cidade" placeholder="Cidade" type="text" required
+                                    [(ngModel)]="cliente.endereco.cidade" #cidade="ngModel" minlength="2" />
+                                <mat-hint>Digite a cidade</mat-hint>
+                                <mat-error *ngIf="cidade.errors && (cidade.dirty || cidade.touched)">
+                                    <div [hidden]="!cidade.errors?.['required']">
+                                        Cidade é <strong>obrigatória</strong>
+                                    </div>
+                                    <div [hidden]="!cidade.errors?.['minlength']">
+                                        Digite uma cidade <strong>válida</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Estado:</mat-label>
+                                <input matInput id="estado" name="estado" placeholder="Estado" type="text" required
+                                    [(ngModel)]="cliente.endereco.estado" #estado="ngModel" minlength="2" />
+                                <mat-hint>Digite o estado</mat-hint>
+                                <mat-error *ngIf="tipo.errors && (tipo.dirty || estado.touched)">
+                                    <div [hidden]="!estado.errors?.['required']">
+                                        Estado é <strong>obrigatório</strong>
+                                    </div>
+                                    <div [hidden]="!estado.errors?.['minlength']">
+                                        Digite um estado <strong>válido</strong>
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="button-wrapper">
+            <button mat-raised-button [routerLink]="['/login']" type="button">Voltar</button>
+            <button mat-raised-button color="primary" type="button" [disabled]="!formCliente.form.valid"
+                (click)="cadastrar()">Cadastrar</button>
+        </div>
+    </form>

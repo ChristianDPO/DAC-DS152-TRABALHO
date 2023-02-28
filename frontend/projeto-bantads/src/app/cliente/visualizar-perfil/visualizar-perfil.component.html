@@ -1,0 +1,78 @@
+<div class="engloba">
+
+    <div>
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>{{clienteLogado.nome!}}</b></h1>
+            <p>Cc. {{contaFormatada}}</p>
+            <p>Ag. 1234-5</p>
+        </div>
+        <div class="button-wrapper-logout">
+            <button class="button-remove" title="Sair" (click)="logout()" mat-raised-button>
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+    </div>
+
+    <div class="info-wrapper">
+        <div class="info">
+            <h2>Dados do Cliente</h2>
+            <hr class="blueHr">
+            <div class="table-wrapper">
+                <table mat-table [dataSource]="elementosTabela1" class="tabela">
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef>Nome</th>
+                        <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef>E-mail</th>
+                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cpf">
+                        <th mat-header-cell *matHeaderCellDef>CPF </th>
+                        <td mat-cell *matCellDef="let element"> {{element.cpf | mask: "000.000.000-00"}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="salario">
+                        <th mat-header-cell *matHeaderCellDef>Salário</th>
+                        <td mat-cell *matCellDef="let element"> {{element.salario | currency}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+                </table>
+
+                <table mat-table [dataSource]="elementosTabela2" class="tabela">
+                    <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef>Tipo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="logradouro">
+                        <th mat-header-cell *matHeaderCellDef>Logradouro</th>
+                        <td mat-cell *matCellDef="let element"> {{element.logradouro}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="numero">
+                        <th mat-header-cell *matHeaderCellDef>Número </th>
+                        <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="complemento">
+                        <th mat-header-cell *matHeaderCellDef>Complemento </th>
+                        <td mat-cell *matCellDef="let element"> {{element.complemento}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cep">
+                        <th mat-header-cell *matHeaderCellDef>CEP </th>
+                        <td mat-cell *matCellDef="let element"> {{element.cep | mask: "00000-000"}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cidade">
+                        <th mat-header-cell *matHeaderCellDef>Cidade </th>
+                        <td mat-cell *matCellDef="let element"> {{element.cidade}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="estado">
+                        <th mat-header-cell *matHeaderCellDef>Estado </th>
+                        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                </table>
+            </div>
+            <button mat-stroked-button class="voltar" [routerLink]="['/home-cliente']">Voltar</button>
+        </div>
+    </div>
+</div>

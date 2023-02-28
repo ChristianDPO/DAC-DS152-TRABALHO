@@ -1,0 +1,65 @@
+<div class="engloba">
+
+    <div>
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>{{clienteLogado.nome!}}</b></h1>
+            <p>Cc. {{contaFormatada}}</p>
+            <p>Ag. 1234-5</p>
+        </div>
+        <div class="button-wrapper-logout">
+            <button class="button-remove" title="Sair" (click)="logout()" mat-raised-button>
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+    </div>
+
+    <div class="info-wrapper">
+        <div class="info">
+            <h2>Sacar</h2>
+            <hr class="blueHr">
+            <div class="form-wrapper">
+                <form #formSacar="ngForm" class="form">
+                    <table mat-table [dataSource]="elementosTabela">
+                        <ng-container matColumnDef="atual">
+                            <th mat-header-cell *matHeaderCellDef>Saldo Atual</th>
+                            <td mat-cell *matCellDef="let element"> {{element.atual! | currency }} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="saque">
+                            <th mat-header-cell *matHeaderCellDef>Saldo após o saque</th>
+                            <td mat-cell *matCellDef="let element"
+                                [ngStyle]="element.aposSaque! >= 0 ? {'color':'#000'} : {'color':'#dd1111'}">
+                                {{element.aposSaque! | currency }} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <mat-form-field floatLabel="always" appearance="outline">
+                        <mat-label>Valor:</mat-label>
+                        <input matInput id="valor" name="valor" placeholder="Valor" type="text" required
+                            [(ngModel)]="valorSaque" #valor="ngModel" mask="separator.2" [thousandSeparator]="'.'"
+                            [decimalMarker]="','" prefix="R$ " [dropSpecialCharacters]="true" minimoValidator
+                            valorMinimo="2" (keyup)="atualizaValorAposSaque()" />
+                        <!-- <span matPrefix>R$&nbsp;</span> -->
+                        <mat-hint>Digite o valor a ser sacado</mat-hint>
+                        <mat-error *ngIf="valor.errors && (valor.dirty || valor.touched)">
+                            <div [hidden]="!valor.errors?.['required']">
+                                O valor é <strong>obrigatório</strong>
+                            </div>
+                            <div [hidden]="!valor.errors?.['minimo']">
+                                O valor minimo é <strong>{{2 | currency}}</strong>
+                            </div>
+                            <div [hidden]="!valor.errors?.['limite']">
+                                O valor não deve passar do limite da conta
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                    <hr>
+                    <button mat-raised-button color="primary" (click)="sacar()" [disabled]="!valor.valid"
+                        type="submit">Sacar</button>
+                </form>
+            </div>
+            <button mat-stroked-button class="voltar" [routerLink]="['/home-cliente']">Voltar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,245 @@
+version: "2.4"
+
+networks:
+  postgres-network:
+    driver: bridge
+
+#Volumes que guardam o conteudo dos bancos de dados
+volumes:
+  authentication_db:
+    name: authentication_db
+  cliente_db:
+    name: cliente_db
+  gerente_db:
+    name: gerente_db
+  conta_cud_db:
+    name: conta_cud_db
+  conta_read_db:
+    name: conta_read_db
+
+
+services:
+  # batads-pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: pgadmin-bantads
+  #   networks:
+  #     - postgres-network
+  #   ports:
+  #     - "15432:80"
+  #   environment:
+  #     #obs: esse email nao existe, ele eh so utilizado para fazer login no pgadmin
+  #     - PGADMIN_DEFAULT_EMAIL=postgres@gmail.com
+  #     - PGADMIN_DEFAULT_PASSWORD=postgres123
+  authentication-postgres:
+    image: postgres_authentication:latest
+    container_name: authentication-postgres
+    build: 
+      context: ..
+      dockerfile: ./docker/Dockerfile_authentication
+    networks:
+      - postgres-network
+    ports:
+      - "6000:5432"
+    environment:
+      - DATABASE_NAME=authentication
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - authentication_db:/var/lib/postgresql/data:rw     
+  cliente-postgres:
+      image: postgres_cliente:latest
+      container_name: cliente-postgres
+      build: 
+        context: ..
+        dockerfile: ./docker/Dockerfile_cliente
+      networks:
+        - postgres-network    
+      ports:
+        - "6001:5432"
+      environment:
+        - DATABASE_NAME=cliente
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres123
+      healthcheck: 
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 10s
+        retries: 3
+      volumes:
+        - cliente_db:/var/lib/postgresql/data:rw
+  gerente-postgres:
+      image: postgres_gerente:latest
+      container_name: gerente-postgres
+      build: 
+        context: ..
+        dockerfile: ./docker/Dockerfile_gerente
+      networks:
+        - postgres-network
+      ports:
+        - "6002:5432"
+      environment:
+        - DATABASE_NAME=gerente
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres123
+      healthcheck: 
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 10s
+        retries: 3
+      volumes:
+        - gerente_db:/var/lib/postgresql/data:rw
+  conta-read-postgres:
+      image: postgres_conta:latest
+      container_name: conta-read-postgres
+      build: 
+        context: ..
+        dockerfile: ./docker/Dockerfile_conta
+      networks:
+        - postgres-network
+      ports:
+        - "6003:5432"
+      environment:
+        - DATABASE_NAME=conta_read
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres123
+        - TZ=America/Sao_Paulo
+        - PGTZ=America/Sao_Paulo
+      healthcheck: 
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 10s
+        retries: 3
+      volumes:
+        - conta_read_db:/var/lib/postgresql/data:rw
+  conta-cud-postgres:
+      image: postgres_conta:latest
+      container_name: conta-cud-postgres
+      build: 
+        context: ..
+        dockerfile: ./docker/Dockerfile_conta
+      networks:
+        - postgres-network
+      ports:
+        - "6004:5432"
+      environment:
+        - DATABASE_NAME=conta_cud
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres123
+        - TZ=America/Sao_Paulo
+        - PGTZ=America/Sao_Paulo
+      healthcheck: 
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 10s
+        retries: 3
+      volumes:
+        - conta_cud_db:/var/lib/postgresql/data:rw
+  authentication-service:
+    image: auth-ws 
+    container_name: authentication-service
+    build: 
+      context: ../backend/auth-ws/
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3001:3001"
+    depends_on:
+      authentication-postgres:
+        condition: service_healthy 
+      rabbitmq-broker:
+        condition: service_healthy
+  gerente-service:
+    image: gerente-ws 
+    container_name: gerente-service
+    build: 
+      context: ../backend/gerente-ws/
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3002:3002"
+    depends_on:
+      gerente-postgres:
+        condition: service_healthy 
+      rabbitmq-broker:
+        condition: service_healthy
+  cliente-service:
+    image: cliente-ws 
+    container_name: cliente-service
+    build: 
+      context: ../backend/cliente-ws/
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3003:3003"
+    depends_on:
+      cliente-postgres:
+        condition: service_healthy 
+      rabbitmq-broker:
+        condition: service_healthy
+  conta-service:
+    image: conta-ws 
+    container_name: conta-service
+    build: 
+      context: ../backend/conta-ws/
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3004:3004"
+    depends_on:
+      conta-read-postgres:
+        condition: service_healthy
+      conta-cud-postgres:
+        condition: service_healthy
+      rabbitmq-broker:
+        condition: service_healthy
+  api-gateway:
+    image: api-gateway-image
+    container_name: api-gateway
+    build: 
+      context: ../backend/bantads-api-gateway
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3000:3000"
+    depends_on:
+      rabbitmq-broker:
+        condition: service_healthy
+  orquestrador-service:
+    image: orquestrador-ws 
+    container_name: orquestrador-service
+    build: 
+      context: ../backend/orquestrador-ws/
+      dockerfile: Dockerfile
+    networks:
+      - postgres-network
+    ports:
+      - "3005:3005"
+    depends_on:
+      rabbitmq-broker:
+        condition: service_healthy
+  rabbitmq-broker:
+    image: rabbitmq:3.7.8-management
+    container_name: rabbitmq-broker
+    ports: 
+      - "5672:5672" #port do broker
+      - "15672:15672" #interface web
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    networks:
+      - postgres-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 3

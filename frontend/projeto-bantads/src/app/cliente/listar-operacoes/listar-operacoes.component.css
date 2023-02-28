@@ -1,0 +1,71 @@
+.saldo {
+    display: flex;
+    border: 2px solid var(--dark-blue);
+    width: 50%;
+    padding: 0;
+    border-radius: 0.5rem;
+    font-size: 20px;
+    text-align: center;
+}
+
+.esquerda {
+    background-color: var(--dark-blue);
+    color: var(--almostWhite);
+    padding: 1rem;
+    margin: 0;
+    width: 50%;
+}
+
+.direita {
+    padding: 1rem;
+    margin: 0;
+    width: 50%;
+    font-weight: 600;
+}
+
+.operacoes-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+    padding: 1rem;
+    gap: 1.2rem;
+    width: 40rem;
+}
+
+.operacao {
+    background-color: var(--almostWhite);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 12rem;
+    height: 8rem;
+    text-align: center;
+    color: #202020;
+    font-size: 20px;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    transition: 0.3s;
+    font-weight: 500;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 0 5px 1px #efefef;
+}
+
+.operacao .icon {
+    color: var(--dark-blue);
+}
+
+.operacao:hover {
+    box-shadow: 0 0 5px 5px #efefef;
+    /* background-color: var(--secondary); */
+    color: var(--secondary);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.icon {
+    font-size: 4rem;
+    height: 4rem;
+    width: auto;
+}

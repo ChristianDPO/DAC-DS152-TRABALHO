@@ -1,0 +1,156 @@
+<div class="engloba">
+
+    <div class="menu-lateral">
+
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>{{gerenteLogado.nome! }}</b></h1>
+            <p>{{gerenteLogado.email! }}</p>
+            <p>{{gerenteLogado.cpf! | mask: "000.000.000-00"}}</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente']">
+            <p>• Pedidos de Autocadastro</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/listar-clientes']">
+            <p>• Clientes</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/listar-melhores-clientes']">
+            <p>• Melhores Clientes</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerente/consultar-cliente']">
+            <p>• Consultar Cliente</p>
+        </div>
+
+        <div class="button-wrapper-logout">
+            <button mat-raised-button
+                    class="button-remove"
+                    matTooltip="Realizar Logout"
+                    matTooltipPosition="right"
+                    (click)="logout()">
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+
+    </div>
+
+    <div class="info-wrapper">
+        <h1>Consultar Cliente</h1>
+
+        <form #formConsultaCliente="ngForm" class="divPesquisar">
+            <mat-form-field class="cpfSearch" appearance="outline">
+                <mat-label>CPF:</mat-label>
+                <input  matInput id="cpf" name="cpf" type="text"
+                        placeholder="CPF" autocomplete="off"
+                        [(ngModel)]="cpfConsulta"
+                        #cpf="ngModel"
+                        minlength="11"
+                        mask="000.000.000-00"
+                        required 
+                        (keyup)="validarCpf(cpf.value)"
+                />
+                <mat-hint>Digite o CPF do cliente</mat-hint>
+                <mat-error *ngIf="cpf.errors && (cpf.dirty || cpf.touched)">
+                    <div [hidden]="!cpf.errors?.['required']">
+                        CPF é <strong>obrigatório</strong>
+                    </div>
+                    <div [hidden]="!cpf.errors?.['cpfInvalido']">
+                        Digite um CPF <strong>válido</strong>
+                    </div>
+                </mat-error>
+            </mat-form-field>
+    
+            <button mat-raised-button class="button-pesquisar"
+                    matTooltip="Pesquisar" matTooltipPosition="right"
+                    [disabled]="!formConsultaCliente.form.valid"
+                    type="submit" (click)="consultarCliente()"
+            >
+                <mat-icon>search</mat-icon>
+            </button>
+        </form>
+
+            <p class="subtitulo">Dados Pessoais</p>
+            <table mat-table [dataSource]="dataSource1" class="tabela">
+                <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef>Nome</th>
+                    <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>E-mail</th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cpf">
+                    <th mat-header-cell *matHeaderCellDef>CPF </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cpf | mask: "000.000.000-00"}} </td>
+                </ng-container>
+                <ng-container matColumnDef="salario">
+                    <th mat-header-cell *matHeaderCellDef>Salário</th>
+                    <td mat-cell *matCellDef="let element">{{element.salario | currency}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+            </table>
+            <p class="subtitulo">Dados de Endereço</p>
+            <table mat-table [dataSource]="dataSource2" class="tabela">
+                <ng-container matColumnDef="tipo">
+                    <th mat-header-cell *matHeaderCellDef>Tipo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="logradouro">
+                    <th mat-header-cell *matHeaderCellDef>Logradouro</th>
+                    <td mat-cell *matCellDef="let element"> {{element.logradouro}} </td>
+                </ng-container>
+                <ng-container matColumnDef="numero">
+                    <th mat-header-cell *matHeaderCellDef>Número </th>
+                    <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                </ng-container>
+                <ng-container matColumnDef="complemento">
+                    <th mat-header-cell *matHeaderCellDef>Complemento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.complemento}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cep">
+                    <th mat-header-cell *matHeaderCellDef>CEP </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cep | mask: "00000-000"}} </td>
+                </ng-container>
+                <ng-container matColumnDef="cidade">
+                    <th mat-header-cell *matHeaderCellDef>Cidade </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cidade}} </td>
+                </ng-container>
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef>Estado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+            </table>
+            <p class="subtitulo">Dados da Conta Bancária</p>
+            <table mat-table [dataSource]="dataSource3" class="tabela">
+                <ng-container matColumnDef="agencia">
+                    <th mat-header-cell *matHeaderCellDef>Agência</th>
+                    <td mat-cell *matCellDef="let element"> 1234-5 </td>
+                </ng-container>
+                <ng-container matColumnDef="conta">
+                    <th mat-header-cell *matHeaderCellDef>Conta</th>
+                    <td mat-cell *matCellDef="let element"> {{contaFormatada!}} </td>
+                </ng-container>
+                <ng-container matColumnDef="abertura">
+                    <th mat-header-cell *matHeaderCellDef>Data / Hora de Abertura </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dataHoraAbertura}} </td>
+                </ng-container>
+                <ng-container matColumnDef="saldo">
+                    <th mat-header-cell *matHeaderCellDef>Saldo</th>
+                    <td mat-cell *matCellDef="let element"> {{element.saldo | currency}} </td>
+                </ng-container>
+                <ng-container matColumnDef="limite">
+                    <th mat-header-cell *matHeaderCellDef>Limite</th>
+                    <td mat-cell *matCellDef="let element"> {{element.limite | currency}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+            </table>
+
+    </div>
+
+</div>

@@ -1,0 +1,13 @@
+<div class="confirm-dialog" >
+    <h1 mat-dialog-title>{{title}}</h1>
+    <div mat-dialog-content>
+        <div>{{message}}</div><br>
+        <div *ngIf="message2.length">{{message2}}</div>
+    </div>
+    <div class="button-wrapper" mat-dialog-actions>
+        <button mat-raised-button type="button" (click)="confirmar(false)">{{cancelButtonText}}</button>
+        <button class="{{confirmButtonClass}}" mat-raised-button type="button" (click)="confirmar(true)">{{confirmButtonText}}</button>
+    </div>
+</div>
+
+

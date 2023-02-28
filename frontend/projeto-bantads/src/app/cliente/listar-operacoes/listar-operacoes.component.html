@@ -1,0 +1,52 @@
+<div class="engloba">
+
+    <div>
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>{{clienteLogado.nome!}}</b></h1>
+            <p>Cc. {{contaFormatada}}</p>
+            <p>Ag. 1234-5</p>
+        </div>
+        <div class="button-wrapper-logout">
+            <button class="button-remove" title="Sair" (click)="logout()" mat-raised-button>
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+    </div>
+
+    <div class="info-wrapper">
+
+        <div class="saldo">
+            <p class="esquerda">Saldo Atual</p>
+            <p class="direita" [ngStyle]="contaCliente.saldo! >= 0 ? {'color':'#000'} : {'color':'#dd1111'} ">
+                {{contaCliente.saldo! | currency}}</p>
+        </div>
+
+        <div class="operacoes-wrapper">
+            <button [routerLink]="['/depositar']" class="operacao"> 
+                Depositar
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">how_to_vote</mat-icon>
+            </button>
+            <button [routerLink]="['/sacar']" class="operacao">
+                Sacar
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">payments</mat-icon>
+            </button>
+            <button [routerLink]="['/transferir']" class="operacao">
+                Transferir
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">compare_arrows</mat-icon>
+            </button>
+            <button (click)="openDialog('Saldo', contaCliente)" class="operacao" [disabled]="loading">
+                Consultar Saldo
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">account_balance_wallet</mat-icon>
+            </button>
+            <button (click)="openDialog('Extrato', contaCliente)" class="operacao" [disabled]="loading">
+                Consultar Extrato
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">request_quote</mat-icon>
+            </button>
+            <button [routerLink]="['/perfil']" class="operacao">
+                Visualizar Perfil
+                <mat-icon class="icon" aria-hidden="false" aria-label="Depositar icon">account_box</mat-icon>
+            </button>
+        </div>
+    </div>
+
+</div>

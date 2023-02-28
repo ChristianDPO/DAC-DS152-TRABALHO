@@ -1,0 +1,31 @@
+.confirm-dialog {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+    width: 20rem;
+    margin: 1
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 600;
+}
+
+.button-remove {
+    background-color: var(--red);
+    color: white;
+    cursor: pointer;
+}
+
+.button-aprove {
+    background-color: var(--green);
+    color: white;
+    cursor: pointer;
+}

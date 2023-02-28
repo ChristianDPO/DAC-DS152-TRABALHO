@@ -1,0 +1,95 @@
+.container {
+    padding: 2rem;
+    width: max-content;
+    color: var(--dark-blue);
+}
+
+h1 {
+    text-align: center;
+    font-weight: 600;
+}
+
+.dados-cliente h1 {
+    text-align: left;
+    font-size: 24px;
+}
+
+h2,
+h3 {
+    font-weight: 500;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.input-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+form {
+    background-color: #fff;
+    box-shadow: 0 0 5px 1px #ddd;
+    padding: 1rem 2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.button-wrapper-logout {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.2rem;
+    justify-content: left;
+}
+
+.button-edit {
+    background-color: var(--secondary);
+    color: white;
+    cursor: pointer;
+}
+
+.button-remove {
+    background-color: rgb(221, 17, 17);
+    color: white;
+    cursor: pointer;
+}
+
+/* Tabela */
+.divTabela,
+table,
+.example-full-width {
+    width: 100%;
+}
+
+::ng-deep .mat-form-field-prefix {
+    top: 0 !important;
+}
+
+.money-positive {
+    color: rgb(16, 173, 16);
+}
+
+.money-negative {
+    color: rgb(221, 17, 17);
+}
+
+.error {
+    transform: translateY(4rem);
+    color: #f44336;
+    font-size: 12px;
+    font-weight: 400
+}
+
+.botao-voltar-wrapper {
+    width: 100%;
+}

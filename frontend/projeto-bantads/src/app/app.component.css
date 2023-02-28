@@ -1,0 +1,9 @@
+.navbar,.footer{
+    background-color: var(--primary);
+    color: var(--almostWhite);
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+}

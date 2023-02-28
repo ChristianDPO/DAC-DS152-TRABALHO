@@ -1,0 +1,42 @@
+<div class="confirm-dialog">
+    <h1 mat-dialog-title>{{title}}</h1>
+    <div mat-dialog-content>
+        <div>{{message}}</div><br>
+        <div *ngIf="message2.length">{{message2}}</div><br>
+
+        <form #formRecusar="ngForm">
+
+            <mat-form-field appearance="outline" color="secondary">
+                <mat-label>Justificativa</mat-label>
+                <textarea   matInput id="justificativa" name="justificativa"
+                            placeholder="Insira aqui o motivo pelo qual você está recusando o pedido de autocadastro do(a) cliente..."
+                            required
+                            [(ngModel)]="justificativa"
+                            #justif="ngModel"
+                ></textarea>
+                <mat-error *ngIf="justif.errors && (justif.dirty || justif.touched)">
+                    <div [hidden]="!justif.errors?.['required']">
+                        Insira uma justificativa para ser enviada ao cliente.
+                    </div>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="button-wrapper" mat-dialog-actions>
+                <button mat-raised-button type="button" 
+                        (click)="confirmar(false)"
+                >
+                    {{cancelButtonText}}
+                </button>
+                <button mat-raised-button type="button"
+                        class="{{confirmButtonClass}}"
+                        (click)="confirmar(true)"
+                        [disabled]="!formRecusar.valid"
+                >
+                    {{confirmButtonText}}
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

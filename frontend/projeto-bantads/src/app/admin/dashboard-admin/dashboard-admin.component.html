@@ -1,0 +1,103 @@
+<div class="engloba">
+
+    <div class="menu-lateral">
+
+        <div class="dados-cliente">
+            <h1>Bem-vindo(a), <b>Admin</b></h1>
+            <p>{{usuarioLogado!.email}}</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/home-admin']">
+            <p>• Dashboard</p>
+        </div>
+
+        <div class="opcoes-menu" [routerLink]="['/gerentes']">
+            <p>• Gerentes</p>
+        </div>
+
+        <div class="button-wrapper-logout">
+            <button mat-raised-button
+                    class="button-remove"
+                    matTooltip="Realizar Logout"
+                    matTooltipPosition="right"
+                    (click)="logout()">
+                <mat-icon>logout</mat-icon> Sair
+            </button>
+        </div>
+
+    </div>
+
+    <div class="info-wrapper">
+        <h1>Dashboard Admin</h1>
+        <div class="indicadores-wrapper">
+            <h2>Dados gerais
+                <hr>
+            </h2>
+            <div class="indicadores">
+                <div class="indicador">
+                    <div class="valor-titulo-wrapper">
+                        <mat-icon class="icone" [ngStyle]="{'color':'#2832e4'}">person</mat-icon>
+                        <div class="valor">{{numeroClientes}}</div>
+                    </div>
+                    <div class="titulo">Clientes</div>
+                </div>
+                <div class="indicador">
+                    <div class="valor-titulo-wrapper">
+                        <mat-icon class="icone" [ngStyle]="{'color':'#10ad10'}">add</mat-icon>
+                        <div class="valor">{{totalSaldosPositivos | currency}}</div>
+                    </div>
+                    <div class="titulo">Saldo Positivo</div>
+                </div>
+                <div class="indicador">
+                    <div class="valor-titulo-wrapper">
+                        <mat-icon class="icone" [ngStyle]="{'color':'#dd1111'}">remove</mat-icon>
+                        <div class="valor">{{totalSaldosNegativos | currency}}</div>
+                    </div>
+                    <div class="titulo">Saldo Negativo</div>
+                </div>
+            </div>
+        </div>
+        <div class="indicadores-wrapper">
+            <h2>Gerentes
+                <hr>
+            </h2>
+            <div class="divTabela">
+                <table mat-table [dataSource]="dataSource" matSort matSortActive="totalSaldosPositivos" matSortDirection="desc">
+
+                    <!-- Nome Column -->
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef> Gerente </th>
+                        <td mat-cell *matCellDef="let gerente"> {{gerente.nome}} </td>
+                    </ng-container>
+
+                    <!-- numClientes Column -->
+                    <ng-container matColumnDef="numClientes">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> N° de Clientes</th>
+                        <td mat-cell *matCellDef="let gerente"> {{gerente.numClientes}} </td>
+                    </ng-container>
+
+                    <!-- totalSaldosPositivos Column -->
+                    <ng-container matColumnDef="totalSaldosPositivos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Saldos Positivos</th>
+                        <td class="money-positive" mat-cell *matCellDef="let gerente">
+                            {{gerente.totalSaldosPositivos |
+                            currency}} </td>
+                    </ng-container>
+
+                    <!-- totalSaldosNegativos Column -->
+                    <ng-container matColumnDef="totalSaldosNegativos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Saldos Negativos</th>
+                        <td class="money-negative" mat-cell *matCellDef="let gerente">
+                            {{gerente.totalSaldosNegativos |
+                            currency}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <h2 class="text-center" *ngIf="!listaGerentes?.length">Nenhum gerente cadastrado.</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
